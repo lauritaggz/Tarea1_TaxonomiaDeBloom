@@ -18,10 +18,12 @@ public:
     this->tipo = tipo;
     this->tiempoEstimado = tiempoEstimado;
   }
+  // Destructor
+  virtual ~Pregunta() {
+  };
 
   // Getters y Setters para los atributos en private (Encapsulamiento)
 
-  // Getters
   string getEnunciado() {
     return enunciado;
   }
@@ -53,13 +55,43 @@ public:
   }
 
   // Método para mostrar la pregunta
-  void mostrarPregunta() {
+  virtual void mostrarPregunta() {
     cout << "Enunciado: " << enunciado << endl;
     cout << "Nivel taxonomico: " << nivelTaxonomico << endl;
     cout << "Tipo: " << tipo << endl;
     cout << "Tiempo estimado: " << tiempoEstimado << " minutos" << endl;
   }
 };
+class PreguntaOpcionMultiple : public Pregunta{
+  private:
+    vector<string> opciones;
+  public:
+    PreguntaOpcionMultiple(string enunciado, string nivelTaxonomico, string tipo, int tiempoEstimado, vector<string> opciones) : Pregunta(enunciado, nivelTaxonomico, "Opcion Multple", tiempoEstimado) {
+      this->opciones = opciones;
+    }
+    void mostrarPregunta() override{
+      Pregunta::mostrarPregunta();
+      cout << "Opciones: " << endl;
+      for (size_t i = 0; i < opciones.size(); i++){
+        cout << i + 1 << ". " << opciones[i] << endl;
+      }
+      cout << endl;
+    }
+};
+
+class PreguntaVerdaderoFalso : public Pregunta{
+  public:
+    PreguntaVerdaderoFalso(string enunciado, string nivelTaxonomico, int tiempoEstimado) : Pregunta(enunciado, nivelTaxonomico, "Verdadero/Falso", tiempoEstimado) {}
+
+    void mostrarPregunta() override{
+      Pregunta::mostrarPregunta();
+      cout << "Respuesta: Verdadero o Falso" << endl;
+    }
+
+};
+  
+
+
 
 // Clase Prueba maneja y representa las preguntas para la prueba
 class Prueba {
@@ -68,6 +100,15 @@ private:
 public:
   // Constructor
   Prueba() {}
+  // Destructor
+  ~Prueba() {
+    for (Pregunta* pregunta : preguntas) {
+        delete pregunta; // Free memory allocated for each Pregunta
+    }
+    preguntas.clear(); // Clear the vector to remove dangling pointers
+    cout << "Prueba eliminada" << endl;
+    cout << "-------------------------------------" << endl;
+  }
 
   // Agregar pregunta
   void agregarPregunta(Pregunta* pregunta) {

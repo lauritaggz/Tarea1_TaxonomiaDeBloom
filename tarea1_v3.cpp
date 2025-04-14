@@ -202,7 +202,7 @@ int main() {
 
         cout << "\nIngrese el enunciado de la pregunta: ";
         getline(cin, enunciado);
-        cout << "Ingrese el nivel taxonómico: ";
+        cout << "Ingrese el nivel taxonómico (Recordar, Entender, Aplicar, Analizar, Evaluar, Crear): ";
         getline(cin, nivel);
         cout << "Ingrese el tipo de pregunta: ";
         getline(cin, tipo);
